@@ -21,8 +21,10 @@ import java.util.stream.Stream;
 public class RoomRepository {
     private final List<Room> knownRooms;
     private Random random = new Random();
+    private BookingRepository bookingRepository;
 
-    public RoomRepository() {
+    public RoomRepository(BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
         this.knownRooms = initializeOfflineRooms();
     }
 
@@ -44,9 +46,15 @@ public class RoomRepository {
                 .collect(Collectors.toList());
     }
 
-    @Scheduled(fixedRate = 30*1000)
+    @Scheduled(fixedRate = 5000)
     private void updateRoomLastSeen() {
-        this.knownRooms.forEach(room -> room.setStatus(this.randomEnum(RoomStatus.class)));
+        this.knownRooms.forEach(room -> {
+            if (bookingRepository.isOccupied(room.getId())) {
+                room.setStatus(RoomStatus.OCCUPIED);
+            } else {
+                room.setStatus(RoomStatus.AVAILABLE);
+            }
+        });
     }
 
     private <T extends Enum<?>> T randomEnum(Class<T> clazz){

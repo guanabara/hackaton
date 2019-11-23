@@ -72,6 +72,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BookingDetails'
+  /rooms/{id}/occupy:
+    post:
+      operationId: occupyRoom
+      parameters:
+        - name: id
+          in: path
+          description: Room id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Room occupied
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+  /rooms/{id}/free:
+    post:
+      operationId: freeRoom
+      parameters:
+        - name: id
+          in: path
+          description: Room id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Room occupied
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
   /devices:
     get:
       summary: Represents a list of consoles.

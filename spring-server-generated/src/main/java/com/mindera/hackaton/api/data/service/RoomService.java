@@ -11,5 +11,8 @@ public interface RoomService {
 
     BookingDetails bookRoom(Integer roomId, BookingDetails details);
 
+    void occupyRoom(Integer roomId);
+    void freeRoom(Integer roomId);
+
     Room getById(Integer id);
 }

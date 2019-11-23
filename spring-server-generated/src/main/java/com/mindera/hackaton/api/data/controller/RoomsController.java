@@ -7,6 +7,7 @@ import com.mindera.hackaton.api.model.Room;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,9 +45,27 @@ public class RoomsController implements RoomsApi {
         return ResponseEntity.created(URI.create("/rooms/")).body("{ \"success\": true }");
     }
 
+    @Override
     @RequestMapping(value = "/rooms/{id}", produces = { "application/json" }, method = RequestMethod.GET)
     public ResponseEntity<Room> getById(@ApiParam(value = "Room id",required=true) @PathVariable("id") Integer id) {
         return ResponseEntity.ok(this.roomService.getById(id));
+    }
 
+    @Override
+    @RequestMapping(value = "/rooms/{id}/free",
+            produces = { "application/json" },
+            method = RequestMethod.POST)
+    public ResponseEntity<String> freeRoom(@ApiParam(value = "Room id",required=true) @PathVariable("id") Integer id) {
+        this.roomService.freeRoom(id);
+        return ResponseEntity.ok("ok");
+    }
+
+    @Override
+    @RequestMapping(value = "/rooms/{id}/occupy",
+            produces = { "application/json" },
+            method = RequestMethod.POST)
+    public ResponseEntity<String> occupyRoom(@ApiParam(value = "Room id",required=true) @PathVariable("id") Integer id) {
+        this.roomService.occupyRoom(id);
+        return ResponseEntity.ok("ok");
     }
 }

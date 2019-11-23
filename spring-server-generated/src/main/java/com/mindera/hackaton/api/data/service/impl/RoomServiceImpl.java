@@ -6,7 +6,6 @@ import com.mindera.hackaton.api.data.service.RoomService;
 import com.mindera.hackaton.api.model.BookingDetails;
 import com.mindera.hackaton.api.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +30,21 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public BookingDetails bookRoom(Integer roomId, BookingDetails details) {
+        if (details == null) {
+            this.bookingRepository.occupyRoom(roomId);
+        }
+
         return bookingRepository.book(roomId, details);
+    }
+
+    @Override
+    public void occupyRoom(Integer roomId) {
+        this.bookingRepository.occupyRoom(roomId);
+    }
+
+    @Override
+    public void freeRoom(Integer roomId) {
+        this.bookingRepository.freeRoom(roomId);
     }
 
     @Override
